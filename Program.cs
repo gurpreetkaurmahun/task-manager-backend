@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
 using System.Text.Json.Serialization;
+using TaskManager.Service;
 
 
 
@@ -16,7 +17,22 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TaskContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        corsBuilder =>
+        {
+            corsBuilder.WithOrigins("http://localhost:3000")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials(); // Allow credentials
+        });
+});
+
 builder.Services.AddLogging();
+
+builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<SubTaskService>();
 
 var app = builder.Build();
 
@@ -27,34 +43,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseCors("AllowReactApp");
 app.MapControllers();
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

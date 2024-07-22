@@ -10,8 +10,8 @@ namespace TaskManager.Models{
         public int TaskItemId { get; set; } 
         private string taskItemName;
         private string taskItemDescription;
-        private DateTime dateCreated;
-        private DateTime dueDate;
+        private DateOnly dateCreated;
+        private DateOnly dueDate;
         private bool  isCompleted ;
         private ICollection <SubTask>? subTasks;
 
@@ -25,12 +25,12 @@ namespace TaskManager.Models{
             set=>taskItemDescription=value;
         }
 
-        public DateTime DataCreated{
+        public DateOnly DateCreated{
             get=>dateCreated;
             set=>dateCreated=value;
         }
 
-        public DateTime DueDate{
+        public DateOnly DueDate{
             get=>dueDate;
             set=>dueDate=value;
         }
@@ -38,7 +38,7 @@ namespace TaskManager.Models{
             get=>isCompleted;
             set=>isCompleted=value;
         }
-        [JsonIgnore]
+       
         public ICollection<SubTask>? SubTasks{
             get=>subTasks;
             set=>subTasks=value;

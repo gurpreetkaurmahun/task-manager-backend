@@ -23,10 +23,10 @@ namespace task_manager_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateOnly>("DateCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DueDate")
+                    b.Property<DateOnly>("DueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsCompleted")
@@ -56,10 +56,10 @@ namespace task_manager_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DataCreated")
+                    b.Property<DateOnly>("DateCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DueDate")
+                    b.Property<DateOnly>("DueDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsCompleted")

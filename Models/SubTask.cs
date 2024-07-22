@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Models{
@@ -11,8 +12,8 @@ namespace TaskManager.Models{
         public int SubTaskId { get; set; } 
         private string subTaskName;
         private string subTaskDescription;
-        private DateTime dateCreated ;
-        private DateTime dueDate ;
+        private DateOnly dateCreated ;
+        private DateOnly dueDate ;
         private bool  isCompleted ;
         private int?  taskItemId ;
         private TaskItem? taskItem;
@@ -26,11 +27,11 @@ namespace TaskManager.Models{
         get=>subTaskDescription;
         set=>subTaskDescription=value;
        }
-       public DateTime DateCreated{
+       public DateOnly DateCreated{
         get=>dateCreated;
         set=>dateCreated=value;
        }
-        public DateTime DueDate{
+        public DateOnly DueDate{
             get=>dueDate;
             set=>dueDate=value;
         }
@@ -43,7 +44,8 @@ namespace TaskManager.Models{
             get => taskItemId;
             set => taskItemId = value;
         }
-        public TaskItem? TaskItem
+          [JsonIgnore]        
+          public TaskItem? TaskItem
         {
             get => taskItem;
             set => taskItem = value;

@@ -19,8 +19,8 @@ namespace task_manager_backend.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TaskItemName = table.Column<string>(type: "TEXT", nullable: false),
                     TaskItemDescription = table.Column<string>(type: "TEXT", nullable: false),
-                    DataCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateCreated = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     IsCompleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -36,8 +36,8 @@ namespace task_manager_backend.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SubTaskName = table.Column<string>(type: "TEXT", nullable: false),
                     SubTaskDescription = table.Column<string>(type: "TEXT", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateCreated = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     IsCompleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     TaskItemId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
