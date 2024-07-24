@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using NuGet.Common;
-
-
 
 namespace TaskManager.Models{
-    public class TaskItem{
+    public class TaskItem
+    {
         [Key]
         public int TaskItemId { get; set; } 
         private string taskItemName;

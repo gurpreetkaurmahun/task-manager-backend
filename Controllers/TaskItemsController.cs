@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
 using TaskManager.Helpers;
 using TaskManager.Service;
@@ -18,14 +13,13 @@ namespace TaskManager.Controllers
         // private readonly TaskContext _context;
         private readonly TaskService _service;
         private readonly ILogger<TaskItemsController> _logger; 
-
-
         public TaskItemsController(TaskService service, ILogger<TaskItemsController>logger)
         {
             _service = service;
             _logger=logger;
         }
 
+        // Retrieves all TaskItems
         // GET: api/tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTaskItems()
@@ -42,12 +36,14 @@ namespace TaskManager.Controllers
             
         }
 
+        // Retrieves a specific TaskItem by its ID
         // GET: api/tasks/5
        [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetTaskItem(int id)
         {
             _logger.LogInformationWithMethod($"Retrieving TaskItem with ID {id}");
 
+            // Retrieve the task item and a message from the Taskservice
             var (taskItem,message)=_service.GetTaskItem(id);
              if (taskItem == null){
                 return StatusCode(500, new{message});
@@ -56,32 +52,14 @@ namespace TaskManager.Controllers
                 return Ok(new{taskItem,message});
             }
             
-            
         }
 
-        //     public async Task<ActionResult<IEnumerable<SubTask>>> GetSubTaskItems(int id)
-        // {
-            
-        //     try{
-        //         _logger.LogInformationWithMethod($" Retreiving Sub Task Items===>");
-        //         var subTaskItems = await _context.SubTasks.Where(subTask => subTask.TaskItemId == id).ToListAsync();
-        //         _logger.LogInformationWithMethod("Sucessfully retreived TaskItems");
-        //         return Ok(subTaskItems);
-        //     }
-        //      catch(Exception ex){
-        //         //  _logger.LogErrorWithMethod($"Failed to retrieve TaskItems:{ex.Message}");
-
-        //         return StatusCode(500,$"Failed with error:{ex.Message}");
-
-        //     }
-            
-        // }
-
-    //     // PUT: api/tasks/5
-    //     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Updates a specific TaskItem by its ID
+        // PUT: api/tasks/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTaskItem(int id, TaskItem taskItem)
         {
+            // Retrieve the task item and a message from the Taskservice
             var (result,message)=_service.UpdateTask(id,taskItem);
             if(result){
                 return Ok(new{message});
@@ -89,18 +67,15 @@ namespace TaskManager.Controllers
             else{
                 return BadRequest(new{message});
             }
-
-
         }
 
-
-
+        // Adds a new TaskItem
         // POST: api/tasks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TaskItem>> PostTaskItem(TaskItem taskItem)
         {
 
+            // Retrieve the task item and a message from the Taskservice
             var (result,message)=_service.AddTask(taskItem);
             if(result!=null){
                 return Ok(message);
@@ -111,12 +86,12 @@ namespace TaskManager.Controllers
 
         }
 
-   
-
-    //     // DELETE: api/tasks/5
+        // Deletes a specific TaskItem by its ID
+        // DELETE: api/tasks/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskItem(int id)
         {
+            // Retrieve the task item and a message from the Taskservice
             var (result,message)=_service.DeleteTask(id);
             if(result){
                 return Ok(new{message});
@@ -124,8 +99,6 @@ namespace TaskManager.Controllers
             else{
                 return BadRequest(new{message});
             }
-
-
         }
 
    

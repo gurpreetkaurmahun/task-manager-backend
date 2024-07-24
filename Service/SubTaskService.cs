@@ -124,7 +124,7 @@ namespace TaskManager.Service{
                 }
 
                 _context.SubTasks.Add(subTask);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 _logger.LogInformationWithMethod($"TaskItem with name:{subTask.SubTaskName} added sucsessfully");
                 return ( subTask,$"TaskItem with name {subTask.SubTaskName} added successfully");
@@ -170,7 +170,7 @@ namespace TaskManager.Service{
                 }
 
                 _context.Entry(subTask).State = EntityState.Modified;
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 _logger.LogInformationWithMethod($"SubTask with id:{subTask.SubTaskId} successfully updated");
 
                 var  subTaskMessage = $"Changes made to  SubTask with Id {subTask.SubTaskId}" ;

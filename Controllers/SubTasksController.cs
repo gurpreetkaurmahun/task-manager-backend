@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Models;
@@ -17,19 +12,19 @@ namespace TaskManager.Controllers
     {
        private readonly SubTaskService _service;
         private readonly ILogger<SubTasksController> _logger; 
-
         public SubTasksController(SubTaskService service,ILogger<SubTasksController> logger)
         {
             _service=service;
             _logger=logger;
         }
 
-   
         //// Retrieves a specific SubTask for a given TaskId and SubTaskId
         // GET: api/Tasks/{id}/SubTasks/{id}
          [HttpGet("{taskId}/SubTasks/{id}")]
-        public async Task<ActionResult<SubTask>> GetSubTask(int taskId,int id){
+        public async Task<ActionResult<SubTask>> GetSubTask(int taskId,int id)
+        {
 
+            // Retrieve the specific sub-task and message  from the SubTask service
             var(subTask,message)=_service.GetSubTaskWithId(taskId,id);
             if(subTask!=null){
                 return Ok(new{subTask,message});
@@ -39,14 +34,13 @@ namespace TaskManager.Controllers
             }
         }
 
-
-         // Retrieves all SubTasks for a given TaskId
+        // Retrieves all SubTasks for a given TaskId
         // GET: api/Tasks/{id}/SubTasks
         [HttpGet("{id}/SubTasks")]
         public async Task<ActionResult<SubTask>> GetSubTasks(int id)
         {
-            _logger.LogInformationWithMethod($"Retrieving SubTask for Tasks with TaskId {id}");
-
+           
+            // Retrieve the specific sub-task and message  from the SubTask service
             var(subTask,message)=_service.GetSubTasks(id);
 
             if(subTask!=null){
@@ -63,7 +57,10 @@ namespace TaskManager.Controllers
         [HttpPut("{taskId}/SubTasks/{id}")]
         public async Task<IActionResult> PutSubTask(int taskId, int id, SubTask subTask)
         {
+
+             // Retrieve the specific sub-task and message  from the SubTask service
             var(result,message)=_service.UpdateSubTask(taskId,id,subTask);
+
             if(result){
                 return Ok(new{message});
             }
@@ -80,8 +77,10 @@ namespace TaskManager.Controllers
         {
             
             subTask.TaskItemId = id;
-
+            
+             // Retrieve the specific sub-task and message  from the SubTask service
             var(subTaskItem,message)=_service.AddSubTask(subTask);
+
             if(subTaskItem!=null){
                 return Ok(new{subTask,message});
             }
@@ -97,18 +96,16 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> DeleteSubTask(int taskId,int id)
         {
             
+             // Retrieve the specific sub-task and message  from the SubTask service
             var(result,message)=_service.DeleteTask(taskId,id);
+
             if(result){
                 return Ok(new{message});
             }
             else{
                 return  BadRequest(new{message});
             }
-
         }
-
-     
-
 
     }
 }

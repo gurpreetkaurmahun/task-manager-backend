@@ -10,20 +10,20 @@ namespace TaskManager.Service{
 
         public static (bool Result,string Message) ValidDates(DateOnly dateCreated, DateOnly dueDate){
             if(!DateChecker(dateCreated)){
-                return(false,"Please Enter Date After: 2024/01/01");
+                return(false, "Please Enter Date After: 2024/01/01");
             }
             if(!DateChecker(dueDate)){
-                return(false,"Please Enter Date After: 2024/01/01");
+                return(false, "Please Enter Date After: 2024/01/01");
             }
             if(dateCreated>dueDate){
-                return (false,$"Invalid values for dates entered: DueDate ({dueDate}) should be later than DateCreated ({dateCreated}). Please ensure that the DueDate is set to a date that is after the DateCreated.");
+                return (false, $"Invalid values for dates entered: DueDate ({dueDate}) should be later than DateCreated ({dateCreated}). Please ensure that the DueDate is set to a date that is after the DateCreated.");
             }
             else{
-                return (true,"Valid date created and due date entered");
+                return (true, "Valid date created and due date entered");
             }
         }
 
-        public static bool  ValidInput(string input){
+        public static bool ValidInput(string input){
             if(string.IsNullOrEmpty(input)){
                 return false;
             }
@@ -35,7 +35,6 @@ namespace TaskManager.Service{
             DateOnly initialDate = new DateOnly(2024, 1, 1);
             return date>initialDate;
         }
-
 
     }
 }
