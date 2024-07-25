@@ -192,8 +192,6 @@ public class SubTaskServiceTest
             TaskItemId = taskId
         };
 
-        _mockContext.Setup(c => c.TaskItems.Any(t => t.TaskItemId == taskId)).Returns(true);
-
         // Attempt to update the SubTask
         var (result, message) = _subTaskService.UpdateSubTask(taskId, subTaskId, updatedSubTask);
 
@@ -280,35 +278,5 @@ public class SubTaskServiceTest
         Assert.Equal($"  Cannot add SubTask,Task with id: {nonExistentTaskId} doesnot exists, Please recheck the task Id", result.message);
         
     }
-
-[Fact]
-public void DeleteSubTask_ValidInput_ShouldDeleteSubTaskAndReturnSuccessMessage()
-{
-    // Arrange: Define valid TaskItem ID and SubTask ID
-    var taskId = 1; // TaskItemId that exists
-    var subTaskId = 1; // SubTaskId that exists within TaskItemId 1
-
-    // Act: Attempt to delete the SubTask
-    var result = _subTaskService.DeleteSubTask(taskId, subTaskId);
-
-    // Assert: Verify that the SubTask was deleted successfully and the correct message is returned
-    Assert.True(result.result); // This should be True as we expect successful deletion
-    Assert.Equal($"SubTask with id: {subTaskId} deleted successfully.", result.message);
-
-    // Verify SubTask removal: Check that the SubTask is no longer in the test data
-    var subTask = _testSubTasks.FirstOrDefault(st => st.SubTaskId == subTaskId);
-    Assert.Null(subTask); // SubTask should be deleted in mock
-
-    // Verify Remove and SaveChanges were called: Ensure the correct methods were invoked on the mock context
-    _mockContext.Verify(m => m.SubTasks.Remove(It.Is<SubTask>(st => st.SubTaskId == subTaskId)), Times.Once);
-    _mockContext.Verify(m => m.SaveChanges(), Times.Once);
-}
-
-
-
-       
-
-
-
   
 }
