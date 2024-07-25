@@ -20,7 +20,7 @@ namespace TaskManager.Controllers
 
         //// Retrieves a specific SubTask for a given TaskId and SubTaskId
         // GET: api/Tasks/{id}/SubTasks/{id}
-         [HttpGet("{taskId}/SubTasks/{id}")]
+         [HttpGet("{taskId}/subtasks/{id}")]
         public async Task<ActionResult<SubTask>> GetSubTask(int taskId,int id)
         {
 
@@ -36,7 +36,7 @@ namespace TaskManager.Controllers
 
         // Retrieves all SubTasks for a given TaskId
         // GET: api/Tasks/{id}/SubTasks
-        [HttpGet("{id}/SubTasks")]
+        [HttpGet("{id}/subtasks")]
         public async Task<ActionResult<SubTask>> GetSubTasks(int id)
         {
            
@@ -54,7 +54,7 @@ namespace TaskManager.Controllers
 
         // Updates a specific SubTask for a given TaskId and SubTaskId
         // PUT: api/SubTasks/5
-        [HttpPut("{taskId}/SubTasks/{id}")]
+        [HttpPut("{taskId}/subtasks/{id}")]
         public async Task<IActionResult> PutSubTask(int taskId, int id, SubTask subTask)
         {
 
@@ -72,7 +72,7 @@ namespace TaskManager.Controllers
 
         // // POST: api/SubTasks
         // Adds a new SubTask to the specified TaskId
-        [HttpPost("{id}/SubTasks")]
+        [HttpPost("{id}/subtasks")]
         public async Task<ActionResult<SubTask>> PostSubTask(SubTask subTask, int id)
         {
             
