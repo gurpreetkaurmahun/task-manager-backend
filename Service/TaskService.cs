@@ -33,7 +33,6 @@ namespace TaskManager.Service{
                 _logger.LogErrorWithMethod($"Failed to retrieve TaskItems from the DB with exception message: {ex.Message}");
                 return taskItems;
             }
-
         }
 
         public (TaskItem taskItem,string message) GetTaskItem(int id){
@@ -41,7 +40,7 @@ namespace TaskManager.Service{
             TaskItem taskItem = null;
             try{
 
-            //Retrieve the TaskItem including its related SubTasks using the provided ID
+            //Retrieve the TaskItem including its related SubTasks using the provided id
             taskItem = _context.TaskItems.Include(t => t.SubTasks).FirstOrDefault(t => t.TaskItemId == id);
 
             if (taskItem == null)
@@ -61,11 +60,17 @@ namespace TaskManager.Service{
                 _logger.LogErrorWithMethod($"Failed to retrieve task item with id: {id}. Got exception message: {ex.Message}");
                 return (taskItem, $"Failed to retrieve task item with id:{id}");
             }
-        
         }
 
         public (bool Result, string Message) UpdateTask(int id, TaskItem taskItem){
              try{
+
+                // Check if the provided ID matches the TaskItem's ID
+                if (id != taskItem.TaskItemId){
+                     _logger.LogErrorWithMethod("Invalid request as provided id does not match with TaskItemId");
+                     return (false,"Invalid request as provided id does not match with TaskItemId");
+                 }
+
                 // Retrieving existing TaskItem
                 var existingTaskItem = _context.TaskItems.Find(id);
                 if (existingTaskItem == null){
@@ -85,12 +90,12 @@ namespace TaskManager.Service{
                     }
                 } 
         
-                // Handle other update requests with validation checks
-                // Check if the provided ID matches the TaskItem's ID
-                if (id != taskItem.TaskItemId){
-                     _logger.LogErrorWithMethod("Invalid request as provided id does not match with TaskItemId");
-                     return (false,"Invalid request as provided id does not match with TaskItemId");
-                 }
+                // // Handle other update requests with validation checks
+                // // Check if the provided ID matches the TaskItem's ID
+                // if (id != taskItem.TaskItemId){
+                //      _logger.LogErrorWithMethod("Invalid request as provided id does not match with TaskItemId");
+                //      return (false,"Invalid request as provided id does not match with TaskItemId");
+                //  }
 
                 // Validate the dates in the TaskItem
                 var (result,message)=ValidationHelper.ValidDates(taskItem.DateCreated,taskItem.DueDate);
@@ -104,9 +109,8 @@ namespace TaskManager.Service{
                 existingTaskItem.DueDate = taskItem.DueDate;
                 existingTaskItem.TaskItemName = taskItem.TaskItemName;
                 existingTaskItem.TaskItemDescription = taskItem.TaskItemDescription;
-                 _context.SaveChanges();
-                 _logger.LogInformationWithMethod($"TaskItem with id:{id} successfully updated");
-
+                _context.SaveChanges();
+                _logger.LogInformationWithMethod($"TaskItem with id:{id} successfully updated");
 
                 string taskMessage = $"Changes made to task item with id: {taskItem.TaskItemId}" ;
                 return (true, taskMessage);
@@ -138,7 +142,7 @@ namespace TaskManager.Service{
                     return (null, $"Date validation failed. Error message: {message}") ;
                 }
 
-                 // Check if the TaskItem name is valid (not empty)
+                // Check if the TaskItem name is valid (not empty)
                 if(!ValidationHelper.ValidInput(taskItem.TaskItemName) ){
                     return (null, "Validation failed.The TaskItem name cannot be empty.");
                 }
@@ -170,7 +174,7 @@ namespace TaskManager.Service{
 
             try{
 
-                 // Retrieve the TaskItem from the database, including its associated SubTasks
+                // Retrieve the TaskItem from the database, including its associated SubTasks
                 var taskItem = _context.TaskItems.Include(t => t.SubTasks)
                 .FirstOrDefault(t => t.TaskItemId == id);
 
@@ -202,7 +206,7 @@ namespace TaskManager.Service{
              }
         }
 
-    
+        //Method to check if the SubTask for a TaskItem are completed
         public bool CheckIfSubTaskAreComplete(int id){
 
             TaskItem taskItem = _context.TaskItems.Include(t => t.SubTasks).FirstOrDefault(t => t.TaskItemId == id);
@@ -217,12 +221,10 @@ namespace TaskManager.Service{
                         return false;
                 }
             }
-             
             // All subtasks are complete
             return true;
         }
-
-
+        
         private bool TaskItemExists(int id){
             return _context.TaskItems.Any(e => e.TaskItemId == id);
         }

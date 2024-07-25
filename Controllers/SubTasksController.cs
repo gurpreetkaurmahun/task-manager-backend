@@ -25,7 +25,7 @@ namespace TaskManager.Controllers
         {
 
             // Retrieve the specific sub-task and message  from the SubTask service
-            var(subTask,message)=_service.GetSubTaskWithId(taskId,id);
+            var(subTask,message)=_service.GetSubTaskWithId(id);
             if(subTask!=null){
                 return Ok(new{subTask,message});
             }
@@ -93,11 +93,11 @@ namespace TaskManager.Controllers
         // Deletes a specific SubTask for a given TaskId and SubTaskId
         // DELETE: api/SubTasks/5
         [HttpDelete("{taskId}/SubTasks/{id}")]
-        public async Task<IActionResult> DeleteSubTask(int taskId,int id)
+        public async Task<IActionResult> DeleteSubTaskMethod(int taskId,int id)
         {
             
              // Retrieve the specific sub-task and message  from the SubTask service
-            var(result,message)=_service.DeleteTask(taskId,id);
+            var(result,message)=_service.DeleteSubTask(taskId,id);
 
             if(result){
                 return Ok(new{message});
