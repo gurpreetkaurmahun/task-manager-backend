@@ -226,7 +226,7 @@ namespace TaskManager.Service{
 
                 // Remove the SubTask from the database context
                 _context.SubTasks.Remove(subTask);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 _logger.LogInformationWithMethod($"SubTask with id: {id} deleted sucessfully");
                 return (true,$"SubTask with id: {id} deleted sucessfully");
